@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { margin: 0; background-color: #000; color: white; font-family: sans-serif; overflow: hidden; }
+        /* Pantalla Inicial */
+        #splash { height: 100vh; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+        .circle { width: 150px; height: 150px; border-radius: 50%; background: #111; border: 2px solid #333; transition: transform 0.2s; }
+        .circle:active { transform: scale(0.9); }
+        
+        /* Tienda */
+        #shop { display: none; height: 100vh; flex-direction: column; }
+        .content { flex: 1; padding: 20px; overflow-y: auto; text-align: center; }
+        
+        /* Barra Inferior (Estilo Domino's) */
+        nav { height: 60px; background: #1a1a1a; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #333; }
+        nav div { font-size: 12px; cursor: pointer; text-align: center; }
+    </style>
+</head>
+<body>
+    <div id="splash" onclick="openShop()">
+        <div class="circle"></div>
+    </div>
+
+    <div id="shop">
+        <div class="content" id="main-content">
+            <h2>🥐 Nuestros Croissants</h2>
+            <p>Aquí aparecerán tus productos...</p>
+        </div>
+        <nav>
+            <div onclick="show('productos')">📦<br>Productos</div>
+            <div onclick="show('pedidos')">📋<br>Pedidos</div>
+            <div onclick="show('usuario')">👤<br>Usuario</div>
+        </nav>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function openShop() {
+            document.getElementById('splash').style.display = 'none';
+            document.getElementById('shop').style.display = 'flex';
+        }
+
+        function show(section) {
+            const content = document.getElementById('main-content');
+            if(section === 'productos') content.innerHTML = '<h2>🥐 Productos</h2><p>Menú de croissants...</p>';
+            if(section === 'pedidos') content.innerHTML = '<h2>📋 Mis Pedidos</h2><p>No tienes pedidos aún.</p>';
+            if(section === 'usuario') content.innerHTML = `<h2>👤 Usuario</h2><p>Hola, ${tg.initDataUnsafe?.user?.first_name || 'Chef'}!</p>`;
+        }
+    </script>
+</body>
+</html>
